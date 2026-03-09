@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Trading Copilot</title>
+
+<style>
+
+body{
+background:#0a0f1f;
+color:white;
+font-family:Arial;
+text-align:center;
+}
+
+.asset{
+background:#111827;
+padding:15px;
+margin:10px;
+border-radius:8px;
+}
+
+button{
+padding:10px;
+font-size:16px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Trading Copilot</h1>
+
+<button onclick="scan()">Scanner Mercado</button>
+
+<div id="scanner"></div>
+
+<script>
+
+async function getPrice(symbol){
+
+let r = await fetch(
+"https://api.binance.com/api/v3/ticker/price?symbol="+symbol
+)
+
+let data = await r.json()
+
+return data.price
+
+}
+
+async function scan(){
+
+let ativos=[
+"BTCUSDT",
+"ETHUSDT",
+"BNBUSDT"
+]
+
+let html=""
+
+for(let a of ativos){
+
+let price = await getPrice(a)
+
+html+=`
+<div class="asset">
+
+${a}
+
+<br>
+
+Preço: ${price}
+
+</div>
+`
+
+}
+
+document.getElementById("scanner").innerHTML=html
+
+}
+
+</script>
+
+</body>
+
+</html>
